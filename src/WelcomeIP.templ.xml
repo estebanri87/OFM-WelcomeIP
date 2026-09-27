@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_14/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/14" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  <ManufacturerData>
+    <Manufacturer>
+      <ApplicationPrograms>
+        <ApplicationProgram>
+          <Static>
+            <Parameters>
+              <!-- Ein Kanal = ein Welcome-IP-Gerät. Der Kanaltyp entscheidet, welche
+                   Parameter und Objekte sichtbar sind. Kanal- und Datenpunktnummern
+                   stammen aus der Referenztabelle des ABB-Entwicklerportals; sie sind
+                   nicht gegen Firmware-Stände dokumentiert und deshalb im Expertenteil
+                   überschreibbar. -->
+              <Parameter Id="%AID%_P-%TT%%CC%000" Name="Device%C%Name" ParameterType="%AID%_PT-WIPText40" Text="Beschreibung" Value="" />
+
+              <Union SizeInBit="160">
+                <Memory CodeSegment="%MID%" Offset="0" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%001" Name="CH%C%Serial" ParameterType="%AID%_PT-WIPSerial" Offset="0" BitOffset="0" Text="Seriennummer" Value="" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="20" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%002" Name="CH%C%Type" ParameterType="%AID%_PT-WIPChannelType" Offset="0" BitOffset="0" Text="Gerätetyp" Value="0" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="21" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%003" Name="CH%C%OpenPath" ParameterType="%AID%_PT-WIPOpenPath" Offset="0" BitOffset="0" Text="Öffnungsweg" Value="0" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="22" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%004" Name="CH%C%OpenTrigger" ParameterType="%AID%_PT-WIPTrigger" Offset="0" BitOffset="0" Text="Auslösen bei Wert" Value="0" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="23" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%005" Name="CH%C%LockEnable" ParameterType="%AID%_PT-WIPYesNo" Offset="0" BitOffset="0" Text="Sperrobjekt" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%006" Name="CH%C%RingMode" ParameterType="%AID%_PT-WIPRingMode" Offset="0" BitOffset="1" Text="Klingelsignal" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%007" Name="CH%C%Expert" ParameterType="%AID%_PT-WIPYesNo" Offset="0" BitOffset="2" Text="Experteneinstellungen" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%008" Name="CH%C%LightEnable" ParameterType="%AID%_PT-WIPYesNo" Offset="0" BitOffset="3" Text="Lichtkanal verwenden" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%009" Name="CH%C%StateEnable" ParameterType="%AID%_PT-WIPYesNo" Offset="0" BitOffset="4" Text="Türstatus verwenden" Value="0" />
+              </Union>
+              <Union SizeInBit="16">
+                <Memory CodeSegment="%MID%" Offset="24" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%010" Name="CH%C%RingPulse" ParameterType="%AID%_PT-WIPPulse" Offset="0" BitOffset="0" Text="Impulsdauer" SuffixText=" x 0,1 s" Value="10" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="26" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%011" Name="CH%C%RingBlock" ParameterType="%AID%_PT-WIPBlockTime" Offset="0" BitOffset="0" Text="Sperrzeit (0 = aus)" SuffixText=" s" Value="0" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="27" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%012" Name="CH%C%RingCh" ParameterType="%AID%_PT-WIPIndex" Offset="0" BitOffset="0" Text="Klingeln: Kanal" Value="2" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="28" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%013" Name="CH%C%RingDp" ParameterType="%AID%_PT-WIPIndex" Offset="0" BitOffset="0" Text="Klingeln: Datenpunkt" Value="0" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="29" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%014" Name="CH%C%OpenCh" ParameterType="%AID%_PT-WIPIndex" Offset="0" BitOffset="0" Text="Türöffner: Kanal" Value="2" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="30" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%015" Name="CH%C%OpenDp" ParameterType="%AID%_PT-WIPIndex" Offset="0" BitOffset="0" Text="Türöffner: Datenpunkt" Value="0" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="31" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%016" Name="CH%C%StateCh" ParameterType="%AID%_PT-WIPIndex" Offset="0" BitOffset="0" Text="Türstatus: Kanal" Value="0" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="32" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%017" Name="CH%C%StateDp" ParameterType="%AID%_PT-WIPIndex" Offset="0" BitOffset="0" Text="Türstatus: Datenpunkt" Value="0" />
+              </Union>
+              <!-- Nur für den Öffnungsweg "über die Außenstation": deren Seriennummer. -->
+              <Union SizeInBit="160">
+                <Memory CodeSegment="%MID%" Offset="33" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%018" Name="CH%C%SerialOutdoor" ParameterType="%AID%_PT-WIPSerial" Offset="0" BitOffset="0" Text="Seriennummer Außenstation" Value="" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="53" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%019" Name="CH%C%GenericDpt" ParameterType="%AID%_PT-WIPGenericDpt" Offset="0" BitOffset="0" Text="Datentyp" Value="0" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="54" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%020" Name="CH%C%GenericDir" ParameterType="%AID%_PT-WIPGenericDir" Offset="0" BitOffset="0" Text="Richtung" Value="0" />
+              </Union>
+              <!-- Offsets 55..60 bleiben frei: spätere Parameter verschieben damit das
+                   Speicherlayout nicht und bestehende ETS-Projekte bleiben gültig. -->
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="61" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%%CC%021" Name="CH%C%Active" ParameterType="%AID%_PT-WIPChannelActive" Offset="0" BitOffset="0" Text="Kanalaktivität" Value="0" />
+              </Union>
+            </Parameters>
+
+            <ParameterRefs>
+              <ParameterRef Id="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_P-%TT%%CC%000" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_UP-%TT%%CC%001" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_UP-%TT%%CC%002" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_UP-%TT%%CC%003" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_UP-%TT%%CC%004" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_UP-%TT%%CC%005" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_UP-%TT%%CC%006" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_UP-%TT%%CC%007" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_UP-%TT%%CC%008" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_UP-%TT%%CC%009" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%010_R-%TT%%CC%01001" RefId="%AID%_UP-%TT%%CC%010" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%011_R-%TT%%CC%01101" RefId="%AID%_UP-%TT%%CC%011" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%012_R-%TT%%CC%01201" RefId="%AID%_UP-%TT%%CC%012" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%013_R-%TT%%CC%01301" RefId="%AID%_UP-%TT%%CC%013" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%014_R-%TT%%CC%01401" RefId="%AID%_UP-%TT%%CC%014" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%015_R-%TT%%CC%01501" RefId="%AID%_UP-%TT%%CC%015" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%016_R-%TT%%CC%01601" RefId="%AID%_UP-%TT%%CC%016" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" RefId="%AID%_UP-%TT%%CC%017" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" RefId="%AID%_UP-%TT%%CC%018" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%019_R-%TT%%CC%01901" RefId="%AID%_UP-%TT%%CC%019" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%020_R-%TT%%CC%02001" RefId="%AID%_UP-%TT%%CC%020" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%021_R-%TT%%CC%02101" RefId="%AID%_UP-%TT%%CC%021" />
+            </ParameterRefs>
+
+            <ComObjectTable>
+              <ComObject Id="%AID%_O-%TT%%CC%000" Number="%K0%" Name="CH%C%Ring" Text="Klingeln" FunctionText="Ruf" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%001" Number="%K1%" Name="CH%C%Open" Text="Tür öffnen" FunctionText="Auslösen" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%002" Number="%K2%" Name="CH%C%OpenActive" Text="Türöffner aktiv" FunctionText="Rückmeldung" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%003" Number="%K3%" Name="CH%C%Lock" Text="Sperre" FunctionText="Türöffnung sperren" ObjectSize="1 Bit" DatapointType="DPST-1-3" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%004" Number="%K4%" Name="CH%C%DoorState" Text="Türstatus" FunctionText="offen/geschlossen" ObjectSize="1 Bit" DatapointType="DPST-1-19" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%005" Number="%K5%" Name="CH%C%Error" Text="Fehler" FunctionText="Störung" ObjectSize="1 Bit" DatapointType="DPST-1-5" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%006" Number="%K6%" Name="CH%C%Light" Text="Licht schalten" FunctionText="Ein/Aus" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%007" Number="%K7%" Name="CH%C%LightStatus" Text="Licht Status" FunctionText="Rückmeldung" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%008" Number="%K8%" Name="CH%C%GenericOut" Text="Wert" FunctionText="vom Gerät" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%%CC%009" Number="%K9%" Name="CH%C%GenericIn" Text="Wert setzen" FunctionText="zum Gerät" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
+            </ComObjectTable>
+
+            <ComObjectRefs>
+              <ComObjectRef Id="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_O-%TT%%CC%000" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_O-%TT%%CC%001" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_O-%TT%%CC%002" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_O-%TT%%CC%003" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_O-%TT%%CC%004" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_O-%TT%%CC%005" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_O-%TT%%CC%006" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_O-%TT%%CC%007" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" RefId="%AID%_O-%TT%%CC%008" />
+              <ComObjectRef Id="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" RefId="%AID%_O-%TT%%CC%009" />
+            </ComObjectRefs>
+          </Static>
+
+          <Dynamic>
+            <ChannelIndependentBlock>
+              <!-- Eine Tabellenzeile je Kanal auf der Seite "Kanalauswahl". -->
+              <ParameterBlock Id="%AID%_PB-nnn" Name="Settings">
+                <ParameterBlock Id="%AID%_PB-nnn" Inline="true" Layout="Grid">
+                  <Rows>
+                    <Row Id="%AID%_PB-nnn_R-1" />
+                  </Rows>
+                  <Columns>
+                    <Column Id="%AID%_PB-nnn_C-1" Width="15%" />
+                    <Column Id="%AID%_PB-nnn_C-2" Width="35%" />
+                    <Column Id="%AID%_PB-nnn_C-3" Width="50%" />
+                  </Columns>
+                  <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,1" Text="Gerät %C%" />
+                  <ParameterRefRef RefId="%AID%_UP-%TT%%CC%021_R-%TT%%CC%02101" Cell="1,2" HelpContext="BASE-ChannelSelect" />
+                  <ParameterRefRef RefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" Cell="1,3" HelpContext="BASE-ChannelName" />
+                </ParameterBlock>
+              </ParameterBlock>
+
+              <!-- Der eigentliche Gerätetab, nur für aktivierte Kanäle. -->
+              <ParameterBlock Id="%AID%_PB-nnn" Name="Channel">
+                <choose ParamRefId="%AID%_UP-%TT%%CC%021_R-%TT%%CC%02101">
+                  <when test="=1">
+                    <ParameterBlock Id="%AID%_PB-nnn" Name="f%CC%WIP" Text="Gerät %C%: {{0: ...}}" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" Icon="lock-outline" ShowInComObjectTree="true" HelpContext="WIP-Kanaltyp">
+                      <ParameterSeparator Id="%AID%_PS-nnn" Text="Gerät" UIHint="Headline" />
+                      <ParameterRefRef RefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" HelpContext="BASE-ChannelName" />
+                      <ParameterRefRef RefId="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201" HelpContext="WIP-Kanaltyp" />
+                      <ParameterRefRef RefId="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101" HelpContext="WIP-Kanaltyp" />
+
+                      <!-- 1 = Außenstation -->
+                      <choose ParamRefId="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201">
+                        <when test="=1">
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Klingeln" UIHint="Headline" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%006_R-%TT%%CC%00601" HelpContext="WIP-Klingeln" />
+                          <choose ParamRefId="%AID%_UP-%TT%%CC%006_R-%TT%%CC%00601">
+                            <when test="=0">
+                              <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%010_R-%TT%%CC%01001" HelpContext="WIP-Klingeln" />
+                            </when>
+                          </choose>
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%011_R-%TT%%CC%01101" HelpContext="WIP-Klingeln" />
+                          <ComObjectRefRef RefId="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" />
+
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Türöffner" UIHint="Headline" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" HelpContext="WIP-Oeffnungsweg" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%005_R-%TT%%CC%00501" HelpContext="WIP-Oeffnungsweg" />
+                          <ComObjectRefRef RefId="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" />
+                          <ComObjectRefRef RefId="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" />
+                          <choose ParamRefId="%AID%_UP-%TT%%CC%005_R-%TT%%CC%00501">
+                            <when test="=1">
+                              <ComObjectRefRef RefId="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" />
+                            </when>
+                          </choose>
+
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Türstatus" UIHint="Headline" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%009_R-%TT%%CC%00901" HelpContext="WIP-Kanaltyp" />
+                          <choose ParamRefId="%AID%_UP-%TT%%CC%009_R-%TT%%CC%00901">
+                            <when test="=1">
+                              <ComObjectRefRef RefId="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" />
+                            </when>
+                          </choose>
+                          <ComObjectRefRef RefId="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" />
+                        </when>
+
+                        <!-- 2 = IP-Schaltaktor H8304 -->
+                        <when test="=2">
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Türöffner" UIHint="Headline" />
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Schaltdauer und Betriebsart des Ausgangs werden im Smart Access Point eingestellt, nicht hier." UIHint="Information" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301" HelpContext="WIP-Oeffnungsweg" />
+                          <choose ParamRefId="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301">
+                            <when test="=3">
+                              <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%018_R-%TT%%CC%01801" HelpContext="WIP-Oeffnungsweg" />
+                            </when>
+                          </choose>
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" HelpContext="WIP-Oeffnungsweg" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%005_R-%TT%%CC%00501" HelpContext="WIP-Oeffnungsweg" />
+                          <ComObjectRefRef RefId="%AID%_O-%TT%%CC%001_R-%TT%%CC%00101" />
+                          <ComObjectRefRef RefId="%AID%_O-%TT%%CC%002_R-%TT%%CC%00201" />
+                          <choose ParamRefId="%AID%_UP-%TT%%CC%005_R-%TT%%CC%00501">
+                            <when test="=1">
+                              <ComObjectRefRef RefId="%AID%_O-%TT%%CC%003_R-%TT%%CC%00301" />
+                            </when>
+                          </choose>
+
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Licht" UIHint="Headline" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%008_R-%TT%%CC%00801" HelpContext="WIP-Kanaltyp" />
+                          <choose ParamRefId="%AID%_UP-%TT%%CC%008_R-%TT%%CC%00801">
+                            <when test="=1">
+                              <ComObjectRefRef RefId="%AID%_O-%TT%%CC%006_R-%TT%%CC%00601" />
+                              <ComObjectRefRef RefId="%AID%_O-%TT%%CC%007_R-%TT%%CC%00701" />
+                            </when>
+                          </choose>
+
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Türstatus" UIHint="Headline" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%009_R-%TT%%CC%00901" HelpContext="WIP-Kanaltyp" />
+                          <choose ParamRefId="%AID%_UP-%TT%%CC%009_R-%TT%%CC%00901">
+                            <when test="=1">
+                              <ComObjectRefRef RefId="%AID%_O-%TT%%CC%004_R-%TT%%CC%00401" />
+                            </when>
+                          </choose>
+                          <ComObjectRefRef RefId="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" />
+                        </when>
+
+                        <!-- 3 = Innenstation -->
+                        <when test="=3">
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Ereignis" UIHint="Headline" />
+                          <ComObjectRefRef RefId="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" />
+                          <ComObjectRefRef RefId="%AID%_O-%TT%%CC%005_R-%TT%%CC%00501" />
+                        </when>
+
+                        <!-- 4 = Generischer Datenpunkt -->
+                        <when test="=4">
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="Datenpunkt" UIHint="Headline" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%012_R-%TT%%CC%01201" HelpContext="WIP-Experte" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%013_R-%TT%%CC%01301" HelpContext="WIP-Experte" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%019_R-%TT%%CC%01901" HelpContext="WIP-Experte" />
+                          <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%020_R-%TT%%CC%02001" HelpContext="WIP-Experte" />
+                          <choose ParamRefId="%AID%_UP-%TT%%CC%020_R-%TT%%CC%02001">
+                            <when test="=0">
+                              <ComObjectRefRef RefId="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" />
+                            </when>
+                            <when test="=1">
+                              <ComObjectRefRef RefId="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" />
+                            </when>
+                            <when test="=2">
+                              <ComObjectRefRef RefId="%AID%_O-%TT%%CC%008_R-%TT%%CC%00801" />
+                              <ComObjectRefRef RefId="%AID%_O-%TT%%CC%009_R-%TT%%CC%00901" />
+                            </when>
+                          </choose>
+                        </when>
+                      </choose>
+
+                      <!-- Experte: die Vorgaben stammen aus der ABB-Referenztabelle und
+                           sind nicht gegen Firmware-Stände dokumentiert. -->
+                      <choose ParamRefId="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201">
+                        <when test="!=4">
+                          <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                          <ParameterRefRef RefId="%AID%_UP-%TT%%CC%007_R-%TT%%CC%00701" HelpContext="WIP-Experte" />
+                          <choose ParamRefId="%AID%_UP-%TT%%CC%007_R-%TT%%CC%00701">
+                            <when test="=1">
+                              <ParameterSeparator Id="%AID%_PS-nnn" Text="Nur ändern, wenn die Anlage von der ABB-Referenztabelle abweicht." UIHint="Information" />
+                              <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%012_R-%TT%%CC%01201" HelpContext="WIP-Experte" />
+                              <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%013_R-%TT%%CC%01301" HelpContext="WIP-Experte" />
+                              <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%014_R-%TT%%CC%01401" HelpContext="WIP-Experte" />
+                              <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%015_R-%TT%%CC%01501" HelpContext="WIP-Experte" />
+                              <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%016_R-%TT%%CC%01601" HelpContext="WIP-Experte" />
+                              <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" HelpContext="WIP-Experte" />
+                            </when>
+                          </choose>
+                        </when>
+                      </choose>
+                    </ParameterBlock>
+                  </when>
+                </choose>
+              </ParameterBlock>
+            </ChannelIndependentBlock>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

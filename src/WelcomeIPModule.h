@@ -3,10 +3,6 @@
 #include "WIPChannelOwnerModule.h"
 #include "WipMqttLink.h"
 
-#ifndef WIP_ChannelCount
-#define WIP_ChannelCount 0 // until the ETS application defines it
-#endif
-
 // Busch-Welcome IP door entry system on the KNX bus, via the Smart Access Point's
 // local API (MQTT). Ring, door opener, door state and the IP actuator outputs.
 // No video, no audio -- deliberately out of scope.
@@ -20,6 +16,7 @@ class WelcomeIPModule : public WIPChannelOwnerModule
 
     void setup(bool configured) override;
     void loop(bool configured) override;
+    void processInputKo(GroupObject &ko) override;
 
     OpenKNX::Channel *createChannel(uint8_t _channelIndex) override;
 
@@ -28,18 +25,20 @@ class WelcomeIPModule : public WIPChannelOwnerModule
 
     WipMqttLink &link() { return _link; }
 
+    // Set from the global lock object; a channel checks it before opening.
+    bool globallyLocked() const { return _globalLock; }
+    // A channel reports its ring so the collective object can follow.
+    void ringDetected();
+
   private:
     WipMqttLink _link;
 
-    // Runtime configuration until the ETS application exists. Console: wip connect.
-    std::string _host;
-    std::string _user;
-    std::string _pass;
-    uint16_t _port = 8883;
-    bool _tls = true;
+    bool _globalLock = false;
+    bool _lastConnected = false;
+    uint32_t _ringAnyStarted = 0;
 
-    void connect();
     void dispatchDatapoint(const WelcomeIP::Address &a, const char *value);
+    void handleSmartApDatapoint(const WelcomeIP::Address &a, bool on);
 };
 
 extern WelcomeIPModule openknxWelcomeIPModule;

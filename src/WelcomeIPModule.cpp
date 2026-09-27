@@ -2,6 +2,10 @@
 #include "WelcomeIPChannel.h"
 #include <stdio.h>
 
+// The collective ring object always pulses -- unlike a channel it has no single call to
+// follow, because a second station may ring while the first one is still active.
+#define WIP_RING_ANY_PULSE_MS 1000
+
 WelcomeIPModule::WelcomeIPModule()
     : WIPChannelOwnerModule(WIP_ChannelCount)
 {
@@ -25,21 +29,108 @@ OpenKNX::Channel *WelcomeIPModule::createChannel(uint8_t _channelIndex)
 void WelcomeIPModule::setup(bool configured)
 {
     WIPChannelOwnerModule::setup(configured);
+    if (!configured || !ParamWIP_WIPActive) return;
 
     _link.onDatapoint([this](const WelcomeIP::Address &a, const char *value) {
         dispatchDatapoint(a, value);
     });
+
+    WipMqttLink::Settings s;
+    s.host = (const char *)ParamWIP_WIPHost;
+    s.port = ParamWIP_WIPPort;
+    s.username = (const char *)ParamWIP_WIPUser;
+    s.password = (const char *)ParamWIP_WIPPass;
+    s.tls = ParamWIP_WIPTls;
+    // TODO(Stufe3): ParamWIP_WIPCertCheck == 1 loads /wip_ca.pem from LittleFS.
+    s.caCert = nullptr;
+    // A getAll response is 17-50 KB of JSON; the 1 KB default would reconnect forever.
+    s.rxBufferSize = 64 * 1024;
+    _link.setup(s);
 }
 
 void WelcomeIPModule::loop(bool configured)
 {
     WIPChannelOwnerModule::loop(configured);
+    if (!configured || !ParamWIP_WIPActive) return;
+
     _link.loop();
+
+    const bool up = _link.connected();
+    if (up != _lastConnected)
+    {
+        _lastConnected = up;
+        KoWIP_WIPConnected.value(up, DPT_Switch);
+        KoWIP_WIPDiag.value(up ? "API verbunden" : "API getrennt", DPT_String_8859_1);
+    }
+
+    if (_ringAnyStarted && delayCheck(_ringAnyStarted, WIP_RING_ANY_PULSE_MS))
+    {
+        _ringAnyStarted = 0;
+        KoWIP_WIPRingAny.value(false, DPT_Switch);
+    }
+}
+
+void WelcomeIPModule::ringDetected()
+{
+    KoWIP_WIPRingAny.value(true, DPT_Switch);
+    _ringAnyStarted = millis();
+    if (_ringAnyStarted == 0) _ringAnyStarted = 1;
+}
+
+void WelcomeIPModule::processInputKo(GroupObject &ko)
+{
+    WIPChannelOwnerModule::processInputKo(ko);
+    if (!ParamWIP_WIPActive) return;
+
+    const uint16_t asap = ko.asap();
+    if (asap == WIP_KoWIPLockAll)
+    {
+        _globalLock = ko.value(DPT_Enable);
+        return;
+    }
+    if (!ParamWIP_WIPSapEnable) return;
+
+    const char *serial = _link.smartApSerial();
+    if (!serial[0]) return;
+
+    WelcomeIP::Address a;
+    strncpy(a.serial, serial, sizeof(a.serial) - 1);
+    a.dp = 0;
+    a.output = false;
+
+    switch (asap)
+    {
+        case WIP_KoWIPSapMute:
+            a.channel = WelcomeIP::SAP_CH_MUTE;
+            _link.setDatapoint(a, ko.value(DPT_Switch) ? "1" : "0", false);
+            break;
+        case WIP_KoWIPSapDayNight:
+            a.channel = WelcomeIP::SAP_CH_DAYNIGHT;
+            // 1.024 has no named constant in the knx library.
+            _link.setDatapoint(a, ko.value(Dpt(1, 24)) ? "1" : "0", false);
+            break;
+        case WIP_KoWIPSapBinOut:
+            a.channel = WelcomeIP::SAP_CH_BINARY_OUT;
+            _link.setDatapoint(a, ko.value(DPT_Switch) ? "1" : "0", false);
+            break;
+    }
 }
 
 // Runs in the KNX loop (WipMqttLink queues and defers), so touching KNX is safe here.
 void WelcomeIPModule::dispatchDatapoint(const WelcomeIP::Address &a, const char *value)
 {
+    const bool on = value && value[0] == '1';
+
+    if (ParamWIP_WIPSapEnable)
+    {
+        const char *sap = _link.smartApSerial();
+        if (sap[0] && strcmp(a.serial, sap) == 0)
+        {
+            handleSmartApDatapoint(a, on);
+            return;
+        }
+    }
+
     for (uint8_t i = 0; i < getNumberOfChannels(); i++)
     {
         auto *channel = static_cast<WelcomeIPChannel *>(getChannel(i));
@@ -47,24 +138,33 @@ void WelcomeIPModule::dispatchDatapoint(const WelcomeIP::Address &a, const char 
     }
 }
 
-void WelcomeIPModule::connect()
+void WelcomeIPModule::handleSmartApDatapoint(const WelcomeIP::Address &a, bool on)
 {
-    WipMqttLink::Settings s;
-    s.host = _host.c_str();
-    s.port = _port;
-    s.username = _user.empty() ? nullptr : _user.c_str();
-    s.password = _pass.empty() ? nullptr : _pass.c_str();
-    s.tls = _tls;
-    // A getAll response is 17-50 KB of JSON; the 1 KB default would reconnect forever.
-    s.rxBufferSize = 64 * 1024;
-    _link.setup(s);
+    if (!a.output) return;
+    switch (a.channel)
+    {
+        case WelcomeIP::SAP_CH_DOORBELL:
+            KoWIP_WIPSapDoorbell.value(on, DPT_Switch);
+            if (on) ringDetected();
+            break;
+        case WelcomeIP::SAP_CH_MUTE:
+            KoWIP_WIPSapMuteStat.value(on, DPT_Switch);
+            break;
+        case WelcomeIP::SAP_CH_BINARY_IN:
+            KoWIP_WIPSapBinIn.value(on, DPT_Switch);
+            break;
+        case WelcomeIP::SAP_CH_ALARM:
+            KoWIP_WIPSapAlarm.value(on, DPT_Alarm);
+            break;
+        case WelcomeIP::SAP_CH_TAMPER:
+            KoWIP_WIPSapTamper.value(on, DPT_Alarm);
+            break;
+    }
 }
 
 void WelcomeIPModule::showHelp()
 {
     openknx.console.printHelpLine("wip", "Welcome IP status");
-    openknx.console.printHelpLine("wip connect <host> [user] [pass]", "Connect to the local API");
-    openknx.console.printHelpLine("wip notls", "Use plain MQTT (port 1883) for the next connect");
     openknx.console.printHelpLine("wip devices", "Request the device model (getAll)");
     openknx.console.printHelpLine("wip set <sn> <ch> <dp> <val>", "Write an input datapoint");
     openknx.console.printHelpLine("wip raw on|off", "Log every received payload");
@@ -76,37 +176,14 @@ bool WelcomeIPModule::processCommand(const std::string command, bool debugKo)
 
     if (command == "wip")
     {
-        logInfoP("host: %s:%u tls=%s", _host.empty() ? "(unset)" : _host.c_str(),
-                 (unsigned)_port, _tls ? "yes" : "no");
+        logInfoP("active: %s", ParamWIP_WIPActive ? "yes" : "no");
+        logInfoP("host: %s:%u tls=%s", (const char *)ParamWIP_WIPHost,
+                 (unsigned)ParamWIP_WIPPort, ParamWIP_WIPTls ? "yes" : "no");
         logInfoP("connected: %s", _link.connected() ? "yes" : "no");
         logInfoP("SmartAP serial: %s",
                  _link.smartApSerial()[0] ? _link.smartApSerial() : "(unknown)");
-        logInfoP("channels: %u", (unsigned)getNumberOfChannels());
-        return true;
-    }
-
-    if (command.rfind("wip connect ", 0) == 0)
-    {
-        char host[64] = {}, user[64] = {}, pass[64] = {};
-        const int n = sscanf(command.c_str() + 12, "%63s %63s %63s", host, user, pass);
-        if (n < 1)
-        {
-            logErrorP("usage: wip connect <host> [user] [pass]");
-            return true;
-        }
-        _host = host;
-        _user = (n > 1) ? user : "";
-        _pass = (n > 2) ? pass : "";
-        connect();
-        logInfoP("connecting to %s:%u", _host.c_str(), (unsigned)_port);
-        return true;
-    }
-
-    if (command == "wip notls")
-    {
-        _tls = false;
-        _port = 1883;
-        logInfoP("plain MQTT on port %u for the next connect", (unsigned)_port);
+        logInfoP("channels: %u, global lock: %s",
+                 (unsigned)getNumberOfChannels(), _globalLock ? "on" : "off");
         return true;
     }
 

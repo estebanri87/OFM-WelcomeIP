@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_14/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/14" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  <ManufacturerData>
+    <Manufacturer>
+      <ApplicationPrograms>
+        <ApplicationProgram>
+          <Static>
+            <ParameterTypes>
+              <ParameterType Id="%AID%_PT-WIPYesNo" Name="WIPYesNo">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration Text="Nein" Value="0" Id="%AID%_PT-WIPYesNo_EN-0" />
+                  <Enumeration Text="Ja" Value="1" Id="%AID%_PT-WIPYesNo_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+              <!-- Kanalauswahl: Gerät deaktiviert/aktiviert (OpenKNX-Standard) -->
+              <ParameterType Id="%AID%_PT-WIPChannelActive" Name="WIPChannelActive">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration Text="Deaktiviert" Value="0" Id="%AID%_PT-WIPChannelActive_EN-0" />
+                  <Enumeration Text="Aktiviert" Value="1" Id="%AID%_PT-WIPChannelActive_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPText40" Name="WIPText40">
+                <TypeText SizeInBit="320" />
+              </ParameterType>
+              <!-- Welcome-Seriennummern sind 15-stellig, z. B. 101807A7F04AAA0 -->
+              <ParameterType Id="%AID%_PT-WIPSerial" Name="WIPSerial">
+                <TypeText SizeInBit="160" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPText32" Name="WIPText32">
+                <TypeText SizeInBit="256" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPText64" Name="WIPText64">
+                <TypeText SizeInBit="512" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPPort" Name="WIPPort">
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1" maxInclusive="65535" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPIndex" Name="WIPIndex">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="255" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPPulse" Name="WIPPulse">
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="5" maxInclusive="600" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPBlockTime" Name="WIPBlockTime">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="60" />
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPReconnect" Name="WIPReconnect">
+                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="5" maxInclusive="300" />
+              </ParameterType>
+              <!-- Gerätetypen laut Referenztabelle des ABB-Entwicklerportals -->
+              <ParameterType Id="%AID%_PT-WIPChannelType" Name="WIPChannelType">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
+                  <Enumeration Text="(kein Gerät)" Value="0" Id="%AID%_PT-WIPChannelType_EN-0" />
+                  <Enumeration Text="Außenstation" Value="1" Id="%AID%_PT-WIPChannelType_EN-1" />
+                  <Enumeration Text="IP-Schaltaktor H8304" Value="2" Id="%AID%_PT-WIPChannelType_EN-2" />
+                  <Enumeration Text="Innenstation" Value="3" Id="%AID%_PT-WIPChannelType_EN-3" />
+                  <Enumeration Text="Generischer Datenpunkt" Value="4" Id="%AID%_PT-WIPChannelType_EN-4" />
+                </TypeRestriction>
+              </ParameterType>
+              <!-- Der H8304 hat zwei getrennte Schloss-Ausgänge; welcher API-Kanal welchen
+                   schaltet, ist nicht dokumentiert. Deshalb wählbar statt fest verdrahtet. -->
+              <ParameterType Id="%AID%_PT-WIPOpenPath" Name="WIPOpenPath">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
+                  <Enumeration Text="Potenzialfreier Ausgang (Standard)" Value="0" Id="%AID%_PT-WIPOpenPath_EN-0" />
+                  <Enumeration Text="Türöffner-Kontakt LOCK+/LOCK-" Value="1" Id="%AID%_PT-WIPOpenPath_EN-1" />
+                  <Enumeration Text="Lichtkanal des Schaltaktors" Value="2" Id="%AID%_PT-WIPOpenPath_EN-2" />
+                  <Enumeration Text="Über die Außenstation" Value="3" Id="%AID%_PT-WIPOpenPath_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPTrigger" Name="WIPTrigger">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
+                  <Enumeration Text="1 (EIN)" Value="0" Id="%AID%_PT-WIPTrigger_EN-0" />
+                  <Enumeration Text="0 (AUS)" Value="1" Id="%AID%_PT-WIPTrigger_EN-1" />
+                  <Enumeration Text="beide Werte" Value="2" Id="%AID%_PT-WIPTrigger_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPRingMode" Name="WIPRingMode">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration Text="Impuls" Value="0" Id="%AID%_PT-WIPRingMode_EN-0" />
+                  <Enumeration Text="solange der Ruf läuft" Value="1" Id="%AID%_PT-WIPRingMode_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPGenericDpt" Name="WIPGenericDpt">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
+                  <Enumeration Text="1.001 Schalten" Value="0" Id="%AID%_PT-WIPGenericDpt_EN-0" />
+                  <Enumeration Text="5.010 Zählwert 0-255" Value="1" Id="%AID%_PT-WIPGenericDpt_EN-1" />
+                  <Enumeration Text="5.001 Prozent" Value="2" Id="%AID%_PT-WIPGenericDpt_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPGenericDir" Name="WIPGenericDir">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
+                  <Enumeration Text="lesen (vom Gerät)" Value="0" Id="%AID%_PT-WIPGenericDir_EN-0" />
+                  <Enumeration Text="schreiben (zum Gerät)" Value="1" Id="%AID%_PT-WIPGenericDir_EN-1" />
+                  <Enumeration Text="beides" Value="2" Id="%AID%_PT-WIPGenericDir_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-WIPCertCheck" Name="WIPCertCheck">
+                <TypeRestriction Base="Value" SizeInBit="8" UIHint="DropDown">
+                  <Enumeration Text="keine Prüfung" Value="0" Id="%AID%_PT-WIPCertCheck_EN-0" />
+                  <Enumeration Text="Zertifikat aus Datei /wip_ca.pem" Value="1" Id="%AID%_PT-WIPCertCheck_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+            </ParameterTypes>
+
+            <Parameters>
+              <!-- Modulweite Einstellungen. Offsets sind modulrelativ. -->
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="0" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00001" Name="WIPActive" ParameterType="%AID%_PT-WIPYesNo" Offset="0" BitOffset="0" Text="Modul aktiv" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00002" Name="WIPTls" ParameterType="%AID%_PT-WIPYesNo" Offset="0" BitOffset="1" Text="TLS verwenden" Value="1" />
+                <Parameter Id="%AID%_UP-%TT%00003" Name="WIPSapEnable" ParameterType="%AID%_PT-WIPYesNo" Offset="0" BitOffset="2" Text="Funktionen des Smart Access Point verwenden" Value="0" />
+              </Union>
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="1" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00004" Name="WIPCertCheck" ParameterType="%AID%_PT-WIPCertCheck" Offset="0" BitOffset="0" Text="Zertifikatsprüfung" Value="0" />
+              </Union>
+              <Union SizeInBit="256">
+                <Memory CodeSegment="%MID%" Offset="2" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00005" Name="WIPHost" ParameterType="%AID%_PT-WIPText32" Offset="0" BitOffset="0" Text="Smart Access Point (IP-Adresse)" Value="" />
+              </Union>
+              <Union SizeInBit="16">
+                <Memory CodeSegment="%MID%" Offset="34" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00006" Name="WIPPort" ParameterType="%AID%_PT-WIPPort" Offset="0" BitOffset="0" Text="Port" Value="8883" />
+              </Union>
+              <Union SizeInBit="512">
+                <Memory CodeSegment="%MID%" Offset="36" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00007" Name="WIPUser" ParameterType="%AID%_PT-WIPText64" Offset="0" BitOffset="0" Text="API-Benutzername" Value="" />
+              </Union>
+              <Union SizeInBit="256">
+                <Memory CodeSegment="%MID%" Offset="100" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00008" Name="WIPPass" ParameterType="%AID%_PT-WIPText32" Offset="0" BitOffset="0" Text="API-Passwort" Value="" />
+              </Union>
+              <Union SizeInBit="16">
+                <Memory CodeSegment="%MID%" Offset="132" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00009" Name="WIPReconnect" ParameterType="%AID%_PT-WIPReconnect" Offset="0" BitOffset="0" Text="Verbindung erneut aufbauen nach" SuffixText=" s" Value="30" />
+              </Union>
+              <!-- Offsets 134..143 bleiben frei (Reserve für spätere Parameter). -->
+            </Parameters>
+
+            <ParameterRefs>
+              <ParameterRef Id="%AID%_UP-%TT%00001_R-%TT%0000101" RefId="%AID%_UP-%TT%00001" />
+              <ParameterRef Id="%AID%_UP-%TT%00002_R-%TT%0000201" RefId="%AID%_UP-%TT%00002" />
+              <ParameterRef Id="%AID%_UP-%TT%00003_R-%TT%0000301" RefId="%AID%_UP-%TT%00003" />
+              <ParameterRef Id="%AID%_UP-%TT%00004_R-%TT%0000401" RefId="%AID%_UP-%TT%00004" />
+              <ParameterRef Id="%AID%_UP-%TT%00005_R-%TT%0000501" RefId="%AID%_UP-%TT%00005" />
+              <ParameterRef Id="%AID%_UP-%TT%00006_R-%TT%0000601" RefId="%AID%_UP-%TT%00006" />
+              <ParameterRef Id="%AID%_UP-%TT%00007_R-%TT%0000701" RefId="%AID%_UP-%TT%00007" />
+              <ParameterRef Id="%AID%_UP-%TT%00008_R-%TT%0000801" RefId="%AID%_UP-%TT%00008" />
+              <ParameterRef Id="%AID%_UP-%TT%00009_R-%TT%0000901" RefId="%AID%_UP-%TT%00009" />
+            </ParameterRefs>
+
+            <ComObjectTable>
+              <ComObject Id="%AID%_O-%TT%00000" Number="0" Name="WIPConnected" Text="Verbindung" FunctionText="lokale API erreichbar" ObjectSize="1 Bit" DatapointType="DPST-1-2" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%00001" Number="1" Name="WIPDiag" Text="Diagnose" FunctionText="Meldungstext" ObjectSize="14 Bytes" DatapointType="DPST-16-1" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%00002" Number="2" Name="WIPRingAny" Text="Klingeln (Sammel)" FunctionText="beliebige Station" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%00003" Number="3" Name="WIPLockAll" Text="Sperre (alle)" FunctionText="Türöffnung global sperren" ObjectSize="1 Bit" DatapointType="DPST-1-3" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%00004" Number="4" Name="WIPSapDoorbell" Text="SmartAP Klingeln" FunctionText="Doorbell ring" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%00005" Number="5" Name="WIPSapMute" Text="SmartAP Stummschaltung" FunctionText="schalten" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%00005Stat" Number="6" Name="WIPSapMuteStat" Text="SmartAP Stummschaltung Status" FunctionText="Rückmeldung" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%00007" Number="7" Name="WIPSapDayNight" Text="SmartAP Tag/Nacht" FunctionText="umschalten" ObjectSize="1 Bit" DatapointType="DPST-1-24" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%00008" Number="8" Name="WIPSapBinIn" Text="SmartAP Binäreingang" FunctionText="Zustand" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%00009" Number="9" Name="WIPSapBinOut" Text="SmartAP Binärausgang" FunctionText="schalten" ObjectSize="1 Bit" DatapointType="DPST-1-1" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%00010" Number="10" Name="WIPSapAlarm" Text="SmartAP Alarm" FunctionText="Alarm" ObjectSize="1 Bit" DatapointType="DPST-1-5" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+              <ComObject Id="%AID%_O-%TT%00011" Number="11" Name="WIPSapTamper" Text="SmartAP Sabotage" FunctionText="Alarm" ObjectSize="1 Bit" DatapointType="DPST-1-5" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+            </ComObjectTable>
+
+            <ComObjectRefs>
+              <ComObjectRef Id="%AID%_O-%TT%00000_R-%TT%0000001" RefId="%AID%_O-%TT%00000" />
+              <ComObjectRef Id="%AID%_O-%TT%00001_R-%TT%0000101" RefId="%AID%_O-%TT%00001" />
+              <ComObjectRef Id="%AID%_O-%TT%00002_R-%TT%0000201" RefId="%AID%_O-%TT%00002" />
+              <ComObjectRef Id="%AID%_O-%TT%00003_R-%TT%0000301" RefId="%AID%_O-%TT%00003" />
+              <ComObjectRef Id="%AID%_O-%TT%00004_R-%TT%0000401" RefId="%AID%_O-%TT%00004" />
+              <ComObjectRef Id="%AID%_O-%TT%00005_R-%TT%0000501" RefId="%AID%_O-%TT%00005" />
+              <ComObjectRef Id="%AID%_O-%TT%00006_R-%TT%0000601" RefId="%AID%_O-%TT%00005Stat" />
+              <ComObjectRef Id="%AID%_O-%TT%00007_R-%TT%0000701" RefId="%AID%_O-%TT%00007" />
+              <ComObjectRef Id="%AID%_O-%TT%00008_R-%TT%0000801" RefId="%AID%_O-%TT%00008" />
+              <ComObjectRef Id="%AID%_O-%TT%00009_R-%TT%0000901" RefId="%AID%_O-%TT%00009" />
+              <ComObjectRef Id="%AID%_O-%TT%00010_R-%TT%0001001" RefId="%AID%_O-%TT%00010" />
+              <ComObjectRef Id="%AID%_O-%TT%00011_R-%TT%0001101" RefId="%AID%_O-%TT%00011" />
+            </ComObjectRefs>
+          </Static>
+
+          <Dynamic>
+            <Channel Name="MainChannel%TT%" Text="Welcome IP" Number="%PREFIX%" Id="%AID%_CH-%TT%" Icon="lock-outline">
+              <ParameterBlock Id="%AID%_PB-nnn" Name="WIPSettings" Text="Allgemein" Icon="cog-outline" HelpContext="WIP-Allgemein">
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Welcome IP" UIHint="Headline" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Version: %ModuleVersion%" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" HelpContext="WIP-Allgemein" />
+                <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
+                  <when test="=1">
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Setzt Smart Access Point ab Version 6.36 voraus. Die lokale API muss unter &quot;Verbindungen &amp; APIs&quot; aktiviert und ein API-Benutzer angelegt sein. Der Benutzername ist der vom Gerät vergebene generische Name, nicht der Kontoname." UIHint="Information" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Verbindung" UIHint="Headline" />
+                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00005_R-%TT%0000501" HelpContext="WIP-Verbindung" />
+                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00006_R-%TT%0000601" HelpContext="WIP-Verbindung" />
+                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00007_R-%TT%0000701" HelpContext="WIP-Verbindung" />
+                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00008_R-%TT%0000801" HelpContext="WIP-Verbindung" />
+                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00009_R-%TT%0000901" HelpContext="WIP-Verbindung" />
+                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00002_R-%TT%0000201" HelpContext="WIP-Verbindung" />
+                    <choose ParamRefId="%AID%_UP-%TT%00002_R-%TT%0000201">
+                      <when test="=1">
+                        <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%00004_R-%TT%0000401" HelpContext="WIP-Verbindung" />
+                      </when>
+                    </choose>
+
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Diagnose" UIHint="Headline" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00000_R-%TT%0000001" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00001_R-%TT%0000101" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00002_R-%TT%0000201" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00003_R-%TT%0000301" />
+
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Smart Access Point" UIHint="Headline" />
+                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00003_R-%TT%0000301" HelpContext="WIP-Allgemein" />
+                    <choose ParamRefId="%AID%_UP-%TT%00003_R-%TT%0000301">
+                      <when test="=1">
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00005_R-%TT%0000501" />
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00006_R-%TT%0000601" />
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00007_R-%TT%0000701" />
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00008_R-%TT%0000801" />
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00009_R-%TT%0000901" />
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00010_R-%TT%0001001" />
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00011_R-%TT%0001101" />
+                      </when>
+                    </choose>
+                  </when>
+                </choose>
+              </ParameterBlock>
+
+              <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
+                <when test="=1">
+                  <!-- Kanalauswahl: je Gerät eine einzeilige Tabelle (OpenKNX-Standard) -->
+                  <ParameterBlock Id="%AID%_PB-nnn" Name="WIPChannelSelect" Text="Kanalauswahl" Icon="format-list-bulleted-type" HelpContext="BASE-ChannelSelect">
+                    <ParameterBlock Id="%AID%_PB-nnn" Inline="true" Layout="Grid">
+                      <Rows>
+                        <Row Id="%AID%_PB-nnn_R-1" />
+                      </Rows>
+                      <Columns>
+                        <Column Id="%AID%_PB-nnn_C-1" Width="15%" />
+                        <Column Id="%AID%_PB-nnn_C-2" Width="35%" />
+                        <Column Id="%AID%_PB-nnn_C-3" Width="50%" />
+                      </Columns>
+                      <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,1" UIHint="Headline" Text="Kanal" />
+                      <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,2" UIHint="Headline" Text="Kanalaktivität" />
+                      <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,3" UIHint="Headline" Text="Beschreibung" />
+                    </ParameterBlock>
+                    <op:include href="WelcomeIP.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Settings']/*" type="template" prefix="WIP" IsInner="true" />
+                  </ParameterBlock>
+
+                  <!-- Gerätetabs (nur aktivierte Kanäle) -->
+                  <op:include href="WelcomeIP.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Channel']/*" type="template" prefix="WIP" IsInner="true" />
+                </when>
+              </choose>
+            </Channel>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+      <Baggages>
+        <Baggage TargetPath="" Name="Help_de.zip" Id="%FILE-HELP-de%">
+          <FileInfo TimeInfo="%DATETIME%" />
+        </Baggage>
+      </Baggages>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>
