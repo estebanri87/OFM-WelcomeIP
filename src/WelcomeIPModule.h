@@ -1,4 +1,7 @@
 #pragma once
+#include "WelcomeIPConfig.h"
+#ifdef OPENKNX_WELCOMEIP
+
 
 #include "WIPChannelOwnerModule.h"
 #include "WipMqttLink.h"
@@ -42,3 +45,5 @@ class WelcomeIPModule : public WIPChannelOwnerModule
 };
 
 extern WelcomeIPModule openknxWelcomeIPModule;
+
+#endif // OPENKNX_WELCOMEIP

@@ -1,4 +1,7 @@
 #pragma once
+#include "WelcomeIPConfig.h"
+#ifdef OPENKNX_WELCOMEIP
+
 
 #include "OpenKNX/Network/MQTT/Module.h"
 #include "WipProtocol.h"
@@ -79,3 +82,5 @@ class WipMqttLink
     void drainEvents();
     void publish(const std::string &topic, const std::string &payload);
 };
+
+#endif // OPENKNX_WELCOMEIP

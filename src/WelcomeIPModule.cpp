@@ -1,3 +1,6 @@
+#include "WelcomeIPConfig.h"
+#ifdef OPENKNX_WELCOMEIP
+
 #include "WelcomeIPModule.h"
 #include "WelcomeIPChannel.h"
 #include <stdio.h>
@@ -226,3 +229,5 @@ bool WelcomeIPModule::processCommand(const std::string command, bool debugKo)
 
     return false;
 }
+
+#endif // OPENKNX_WELCOMEIP

@@ -30,6 +30,8 @@ Ausgänge des IP-Schaltaktors. Video und Ton bleiben bewusst außen vor.
   `WipProtocol.cpp` mit `TODO(Stufe2)` markiert und werden am installierten Gerät ermittelt.
 - **Nur ESP32.** Der MQTT-Client von OFM-Network hält auf RP2040 einen statischen
   Instanzzeiger für seine lwIP-Callbacks, sodass eine zweite Instanz den geräteeigenen
-  Client stören würde. TLS gibt es dort ebenfalls nicht.
+  Client stören würde. TLS gibt es dort ebenfalls nicht. Das Modul kapselt sich deshalb
+  über `OPENKNX_WELCOMEIP` (siehe `WelcomeIPConfig.h`) selbst aus; RP2040-Ziele übersetzen
+  weiterhin, nur ohne dieses Modul.
 - Setzt SmartAP-Firmware 6.36 oder neuer voraus, mit aktivierter lokaler API und einem
   API-Benutzer.

@@ -1,3 +1,6 @@
+#include "WelcomeIPConfig.h"
+#ifdef OPENKNX_WELCOMEIP
+
 #include "WelcomeIPChannel.h"
 #include "WelcomeIPModule.h"
 
@@ -248,3 +251,5 @@ void WelcomeIPChannel::openDoor()
     KoWIP_CHError.value(!sent, DPT_Alarm);
     if (!sent) logErrorP("open failed: local API not connected");
 }
+
+#endif // OPENKNX_WELCOMEIP

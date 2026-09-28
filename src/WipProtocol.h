@@ -1,4 +1,7 @@
 #pragma once
+#include "WelcomeIPConfig.h"
+#ifdef OPENKNX_WELCOMEIP
+
 
 #include <functional>
 #include <stdint.h>
@@ -128,3 +131,5 @@ namespace WelcomeIP
     const char *channelName(uint8_t index, char *buf, size_t bufLen);
     const char *datapointName(uint8_t index, bool output, char *buf, size_t bufLen);
 } // namespace WelcomeIP
+
+#endif // OPENKNX_WELCOMEIP

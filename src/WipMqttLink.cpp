@@ -1,3 +1,6 @@
+#include "WelcomeIPConfig.h"
+#ifdef OPENKNX_WELCOMEIP
+
 #include "WipMqttLink.h"
 #include "OpenKNX.h"
 
@@ -122,3 +125,5 @@ void WipMqttLink::drainEvents()
         _evHead = (uint16_t)((_evHead + 1) % WIP_EVENT_QUEUE);
     }
 }
+
+#endif // OPENKNX_WELCOMEIP

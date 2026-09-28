@@ -1,4 +1,7 @@
 #pragma once
+#include "WelcomeIPConfig.h"
+#ifdef OPENKNX_WELCOMEIP
+
 #include "OpenKNX.h"
 
 // Reusable channel-owner base, copied from the project-native pattern used by
@@ -39,3 +42,4 @@ class WIPChannelOwnerModule : public OpenKNX::Module
 #endif
 };
 
+#endif // OPENKNX_WELCOMEIP

@@ -1,4 +1,7 @@
 #pragma once
+#include "WelcomeIPConfig.h"
+#ifdef OPENKNX_WELCOMEIP
+
 
 #include "OpenKNX.h"
 #include "WipProtocol.h"
@@ -83,3 +86,5 @@ class WelcomeIPChannel : public OpenKNX::Channel
     void openDoor();
     static WelcomeIP::Address address(const char *serial, uint8_t channel, uint8_t dp);
 };
+
+#endif // OPENKNX_WELCOMEIP

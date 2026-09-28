@@ -1,3 +1,6 @@
+#include "WelcomeIPConfig.h"
+#ifdef OPENKNX_WELCOMEIP
+
 #include "WipProtocol.h"
 #include "OpenKNX.h"
 #include <ArduinoJson.h>
@@ -259,3 +262,5 @@ namespace WelcomeIP
         return true;
     }
 } // namespace WelcomeIP
+
+#endif // OPENKNX_WELCOMEIP

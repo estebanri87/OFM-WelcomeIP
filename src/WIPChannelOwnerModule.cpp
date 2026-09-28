@@ -1,3 +1,6 @@
+#include "WelcomeIPConfig.h"
+#ifdef OPENKNX_WELCOMEIP
+
 #include "WIPChannelOwnerModule.h"
 
 WIPChannelOwnerModule::WIPChannelOwnerModule(uint8_t numberOfChannels)
@@ -147,3 +150,4 @@ void WIPChannelOwnerModule::processInputKo(GroupObject &ko)
 }
 #endif
 
+#endif // OPENKNX_WELCOMEIP
