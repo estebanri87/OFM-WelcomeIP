@@ -11,6 +11,10 @@
 - In der Kanalauswahl deaktivierte Geräte wurden trotzdem angelegt: `createChannel()` hat
   `Kanalaktivität` bisher nicht ausgewertet.
 
+### Changed
+- KO-Namen und Objektfunktionen vereinheitlicht: „Welcome [Kanal]: Eingang/Ausgang, Wert“. Kanalobjekte zeigen die
+  Kanalbeschreibung im Namen.
+
 ## 0.1.0 - 2026-09-28
 
 Erste Fassung. Anbindung der Busch-Welcome-IP-Türkommunikation an KNX über die
