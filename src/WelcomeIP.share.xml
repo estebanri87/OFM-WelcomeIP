@@ -204,7 +204,6 @@
                       </when>
                     </choose>
 
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Diagnose" UIHint="Headline" />
                     <ComObjectRefRef RefId="%AID%_O-%TT%00000_R-%TT%0000001" />
                     <ComObjectRefRef RefId="%AID%_O-%TT%00001_R-%TT%0000101" />
                     <ComObjectRefRef RefId="%AID%_O-%TT%00002_R-%TT%0000201" />
