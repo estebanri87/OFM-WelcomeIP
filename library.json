@@ -1,6 +1,6 @@
 {
     "name": "OFM-WelcomeIP",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Busch-Welcome IP door entry system on the KNX bus via the Smart Access Point local API (MQTT)",
     "homepage": "https://openknx.de",
     "authors": {

@@ -1,5 +1,16 @@
 # Changelog OFM-WelcomeIP
 
+## 0.2.0 - 2026-09-28
+
+### Added
+- Kanal-Parameter **Suspendiert** (Nein/Ja) im Kanaldefinitions-Block jedes Geräts. Das Gerät
+  bleibt vollständig parametriert, wird aber nicht ausgeführt — hilfreich bei der Fehlersuche.
+  Suspendierte Kanäle tragen im ETS-Baum ein **⛔** vor der Beschreibung.
+
+### Fixed
+- In der Kanalauswahl deaktivierte Geräte wurden trotzdem angelegt: `createChannel()` hat
+  `Kanalaktivität` bisher nicht ausgewertet.
+
 ## 0.1.0 - 2026-09-28
 
 Erste Fassung. Anbindung der Busch-Welcome-IP-Türkommunikation an KNX über die

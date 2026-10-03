@@ -26,6 +26,8 @@ const std::string WelcomeIPModule::version()
 
 OpenKNX::Channel *WelcomeIPModule::createChannel(uint8_t _channelIndex)
 {
+    // Nur aktivierte, nicht suspendierte Geraete anlegen (Kanalauswahl).
+    if (!ParamWIP_CHActive || ParamWIP_CHSuspended) return nullptr;
     return new WelcomeIPChannel(_channelIndex, *this);
 }
 

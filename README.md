@@ -43,6 +43,11 @@ writing a group object from there would race the stack. `WipMqttLink` therefore 
 in the callback and hands the result to `loop()` through a single-producer ring — the
 same record-and-defer rule OFM-Network's webserver follows.
 
+**Only active channels are instantiated.** `createChannel()` returns `nullptr` for a device
+that is disabled in the channel selection or set to *Suspendiert* on its channel tab, so a
+parked device costs neither RAM nor MQTT traffic while keeping its full configuration. A
+suspended channel is marked with ⛔ in the ETS tree.
+
 **A second MQTT client, not the device's own.** The Smart Access Point is a different
 broker with its own credentials and topic scheme, so `MQTT::Module::configure()` points
 a separate instance at it. Status publishes and the last will are off: a foreign broker
