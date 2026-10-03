@@ -9,6 +9,16 @@
 // follow, because a second station may ring while the first one is still active.
 #define WIP_RING_ANY_PULSE_MS 1000
 
+// "Aktiv" in the module list of OpenKNX/Common. Without that list the module is on.
+static bool moduleEnabled()
+{
+#ifdef ParamBASE_ModuleEnabled_WIP
+    return ParamBASE_ModuleEnabled_WIP;
+#else
+    return true;
+#endif
+}
+
 WelcomeIPModule::WelcomeIPModule()
     : WIPChannelOwnerModule(WIP_ChannelCount)
 {
@@ -34,7 +44,7 @@ OpenKNX::Channel *WelcomeIPModule::createChannel(uint8_t _channelIndex)
 void WelcomeIPModule::setup(bool configured)
 {
     WIPChannelOwnerModule::setup(configured);
-    if (!configured || !ParamWIP_WIPActive) return;
+    if (!configured || !moduleEnabled()) return;
 
     _link.onDatapoint([this](const WelcomeIP::Address &a, const char *value) {
         dispatchDatapoint(a, value);
@@ -56,7 +66,7 @@ void WelcomeIPModule::setup(bool configured)
 void WelcomeIPModule::loop(bool configured)
 {
     WIPChannelOwnerModule::loop(configured);
-    if (!configured || !ParamWIP_WIPActive) return;
+    if (!configured || !moduleEnabled()) return;
 
     _link.loop();
 
@@ -85,7 +95,7 @@ void WelcomeIPModule::ringDetected()
 void WelcomeIPModule::processInputKo(GroupObject &ko)
 {
     WIPChannelOwnerModule::processInputKo(ko);
-    if (!ParamWIP_WIPActive) return;
+    if (!moduleEnabled()) return;
 
     const uint16_t asap = ko.asap();
     if (asap == WIP_KoWIPLockAll)
@@ -181,7 +191,7 @@ bool WelcomeIPModule::processCommand(const std::string command, bool debugKo)
 
     if (command == "wip")
     {
-        logInfoP("active: %s", ParamWIP_WIPActive ? "yes" : "no");
+        logInfoP("active: %s", moduleEnabled() ? "yes" : "no");
         logInfoP("host: %s:%u tls=%s", (const char *)ParamWIP_WIPHost,
                  (unsigned)ParamWIP_WIPPort, ParamWIP_WIPTls ? "yes" : "no");
         logInfoP("connected: %s", _link.connected() ? "yes" : "no");

@@ -107,9 +107,14 @@
               <!-- Modulweite Einstellungen. Offsets sind modulrelativ. -->
               <Union SizeInBit="8">
                 <Memory CodeSegment="%MID%" Offset="0" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%TT%00001" Name="WIPActive" ParameterType="%AID%_PT-WIPYesNo" Offset="0" BitOffset="0" Text="Modul aktiv" Value="0" />
+                <!-- Bit 0: früher "Modul aktiv", jetzt Modulliste in OpenKNX/Common. Frei lassen. -->
                 <Parameter Id="%AID%_UP-%TT%00002" Name="WIPTls" ParameterType="%AID%_PT-WIPYesNo" Offset="0" BitOffset="1" Text="TLS verwenden" Value="1" />
                 <Parameter Id="%AID%_UP-%TT%00003" Name="WIPSapEnable" ParameterType="%AID%_PT-WIPYesNo" Offset="0" BitOffset="2" Text="Funktionen des Smart Access Point verwenden" Value="0" />
+                <!-- Welche Modul-Objekte verwendet werden -->
+                <Parameter Id="%AID%_UP-%TT%00010" Name="WIPUseConnected" ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="3" Text="Verbindung" Value="1" />
+                <Parameter Id="%AID%_UP-%TT%00011" Name="WIPUseDiag" ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="4" Text="Diagnose-Meldungstext" Value="1" />
+                <Parameter Id="%AID%_UP-%TT%00012" Name="WIPUseRingAny" ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="5" Text="Klingeln (Sammel)" Value="1" />
+                <Parameter Id="%AID%_UP-%TT%00013" Name="WIPUseLockAll" ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="6" Text="Sperre (alle)" Value="1" />
               </Union>
               <Union SizeInBit="8">
                 <Memory CodeSegment="%MID%" Offset="1" BitOffset="0" />
@@ -139,7 +144,6 @@
             </Parameters>
 
             <ParameterRefs>
-              <ParameterRef Id="%AID%_UP-%TT%00001_R-%TT%0000101" RefId="%AID%_UP-%TT%00001" />
               <ParameterRef Id="%AID%_UP-%TT%00002_R-%TT%0000201" RefId="%AID%_UP-%TT%00002" />
               <ParameterRef Id="%AID%_UP-%TT%00003_R-%TT%0000301" RefId="%AID%_UP-%TT%00003" />
               <ParameterRef Id="%AID%_UP-%TT%00004_R-%TT%0000401" RefId="%AID%_UP-%TT%00004" />
@@ -148,6 +152,10 @@
               <ParameterRef Id="%AID%_UP-%TT%00007_R-%TT%0000701" RefId="%AID%_UP-%TT%00007" />
               <ParameterRef Id="%AID%_UP-%TT%00008_R-%TT%0000801" RefId="%AID%_UP-%TT%00008" />
               <ParameterRef Id="%AID%_UP-%TT%00009_R-%TT%0000901" RefId="%AID%_UP-%TT%00009" />
+              <ParameterRef Id="%AID%_UP-%TT%00010_R-%TT%0001001" RefId="%AID%_UP-%TT%00010" />
+              <ParameterRef Id="%AID%_UP-%TT%00011_R-%TT%0001101" RefId="%AID%_UP-%TT%00011" />
+              <ParameterRef Id="%AID%_UP-%TT%00012_R-%TT%0001201" RefId="%AID%_UP-%TT%00012" />
+              <ParameterRef Id="%AID%_UP-%TT%00013_R-%TT%0001301" RefId="%AID%_UP-%TT%00013" />
             </ParameterRefs>
 
             <ComObjectTable>
@@ -187,70 +195,82 @@
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Welcome IP" UIHint="Headline" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Version: %ModuleVersion%" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
-                <ParameterRefRef RefId="%AID%_UP-%TT%00001_R-%TT%0000101" HelpContext="WIP-Allgemein" />
-                <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Setzt Smart Access Point ab Version 6.36 voraus. Die lokale API muss unter &quot;Verbindungen &amp; APIs&quot; aktiviert und ein API-Benutzer angelegt sein. Der Benutzername ist der vom Gerät vergebene generische Name, nicht der Kontoname." UIHint="Information" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Verbindung" UIHint="Headline" />
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00005_R-%TT%0000501" HelpContext="WIP-Verbindung" />
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00006_R-%TT%0000601" HelpContext="WIP-Verbindung" />
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00007_R-%TT%0000701" HelpContext="WIP-Verbindung" />
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00008_R-%TT%0000801" HelpContext="WIP-Verbindung" />
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00009_R-%TT%0000901" HelpContext="WIP-Verbindung" />
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00002_R-%TT%0000201" HelpContext="WIP-Verbindung" />
+                <choose ParamRefId="%AID%_UP-%TT%00002_R-%TT%0000201">
                   <when test="=1">
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Setzt Smart Access Point ab Version 6.36 voraus. Die lokale API muss unter &quot;Verbindungen &amp; APIs&quot; aktiviert und ein API-Benutzer angelegt sein. Der Benutzername ist der vom Gerät vergebene generische Name, nicht der Kontoname." UIHint="Information" />
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Verbindung" UIHint="Headline" />
-                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00005_R-%TT%0000501" HelpContext="WIP-Verbindung" />
-                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00006_R-%TT%0000601" HelpContext="WIP-Verbindung" />
-                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00007_R-%TT%0000701" HelpContext="WIP-Verbindung" />
-                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00008_R-%TT%0000801" HelpContext="WIP-Verbindung" />
-                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00009_R-%TT%0000901" HelpContext="WIP-Verbindung" />
-                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00002_R-%TT%0000201" HelpContext="WIP-Verbindung" />
-                    <choose ParamRefId="%AID%_UP-%TT%00002_R-%TT%0000201">
-                      <when test="=1">
-                        <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%00004_R-%TT%0000401" HelpContext="WIP-Verbindung" />
-                      </when>
-                    </choose>
+                    <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%00004_R-%TT%0000401" HelpContext="WIP-Verbindung" />
+                  </when>
+                </choose>
 
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Objekte" UIHint="Headline" />
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00010_R-%TT%0001001" HelpContext="WIP-Diagnose" />
+                <choose ParamRefId="%AID%_UP-%TT%00010_R-%TT%0001001">
+                  <when test="=1">
                     <ComObjectRefRef RefId="%AID%_O-%TT%00000_R-%TT%0000001" />
+                  </when>
+                </choose>
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00011_R-%TT%0001101" HelpContext="WIP-Diagnose" />
+                <choose ParamRefId="%AID%_UP-%TT%00011_R-%TT%0001101">
+                  <when test="=1">
                     <ComObjectRefRef RefId="%AID%_O-%TT%00001_R-%TT%0000101" />
+                  </when>
+                </choose>
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00012_R-%TT%0001201" HelpContext="WIP-Diagnose" />
+                <choose ParamRefId="%AID%_UP-%TT%00012_R-%TT%0001201">
+                  <when test="=1">
                     <ComObjectRefRef RefId="%AID%_O-%TT%00002_R-%TT%0000201" />
+                  </when>
+                </choose>
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00013_R-%TT%0001301" HelpContext="WIP-Diagnose" />
+                <choose ParamRefId="%AID%_UP-%TT%00013_R-%TT%0001301">
+                  <when test="=1">
                     <ComObjectRefRef RefId="%AID%_O-%TT%00003_R-%TT%0000301" />
+                  </when>
+                </choose>
 
-                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Smart Access Point" UIHint="Headline" />
-                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00003_R-%TT%0000301" HelpContext="WIP-Allgemein" />
-                    <choose ParamRefId="%AID%_UP-%TT%00003_R-%TT%0000301">
-                      <when test="=1">
-                        <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
-                        <ComObjectRefRef RefId="%AID%_O-%TT%00005_R-%TT%0000501" />
-                        <ComObjectRefRef RefId="%AID%_O-%TT%00006_R-%TT%0000601" />
-                        <ComObjectRefRef RefId="%AID%_O-%TT%00007_R-%TT%0000701" />
-                        <ComObjectRefRef RefId="%AID%_O-%TT%00008_R-%TT%0000801" />
-                        <ComObjectRefRef RefId="%AID%_O-%TT%00009_R-%TT%0000901" />
-                        <ComObjectRefRef RefId="%AID%_O-%TT%00010_R-%TT%0001001" />
-                        <ComObjectRefRef RefId="%AID%_O-%TT%00011_R-%TT%0001101" />
-                      </when>
-                    </choose>
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Smart Access Point" UIHint="Headline" />
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00003_R-%TT%0000301" HelpContext="WIP-Allgemein" />
+                <choose ParamRefId="%AID%_UP-%TT%00003_R-%TT%0000301">
+                  <when test="=1">
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00005_R-%TT%0000501" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00006_R-%TT%0000601" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00007_R-%TT%0000701" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00008_R-%TT%0000801" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00009_R-%TT%0000901" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00010_R-%TT%0001001" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00011_R-%TT%0001101" />
                   </when>
                 </choose>
               </ParameterBlock>
 
-              <choose ParamRefId="%AID%_UP-%TT%00001_R-%TT%0000101">
-                <when test="=1">
-                  <!-- Kanalauswahl: je Gerät eine einzeilige Tabelle (OpenKNX-Standard) -->
-                  <ParameterBlock Id="%AID%_PB-nnn" Name="WIPChannelSelect" Text="Kanalauswahl" Icon="format-list-bulleted-type" HelpContext="BASE-ChannelSelect">
-                    <ParameterBlock Id="%AID%_PB-nnn" Inline="true" Layout="Grid">
-                      <Rows>
-                        <Row Id="%AID%_PB-nnn_R-1" />
-                      </Rows>
-                      <Columns>
-                        <Column Id="%AID%_PB-nnn_C-1" Width="15%" />
-                        <Column Id="%AID%_PB-nnn_C-2" Width="35%" />
-                        <Column Id="%AID%_PB-nnn_C-3" Width="50%" />
-                      </Columns>
-                      <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,1" UIHint="Headline" Text="Kanal" />
-                      <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,2" UIHint="Headline" Text="Kanalaktivität" />
-                      <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,3" UIHint="Headline" Text="Beschreibung" />
-                    </ParameterBlock>
-                    <op:include href="WelcomeIP.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Settings']/*" type="template" prefix="WIP" IsInner="true" />
-                  </ParameterBlock>
+              <!-- Kanalauswahl: je Gerät eine einzeilige Tabelle (OpenKNX-Standard) -->
+              <ParameterBlock Id="%AID%_PB-nnn" Name="WIPChannelSelect" Text="Kanalauswahl" Icon="format-list-bulleted-type" HelpContext="BASE-ChannelSelect">
+                <ParameterBlock Id="%AID%_PB-nnn" Inline="true" Layout="Grid">
+                  <Rows>
+                    <Row Id="%AID%_PB-nnn_R-1" />
+                  </Rows>
+                  <Columns>
+                    <Column Id="%AID%_PB-nnn_C-1" Width="15%" />
+                    <Column Id="%AID%_PB-nnn_C-2" Width="35%" />
+                    <Column Id="%AID%_PB-nnn_C-3" Width="50%" />
+                  </Columns>
+                  <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,1" UIHint="Headline" Text="Kanal" />
+                  <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,2" UIHint="Headline" Text="Kanalaktivität" />
+                  <ParameterSeparator Id="%AID%_PS-nnn" Cell="1,3" UIHint="Headline" Text="Beschreibung" />
+                </ParameterBlock>
+                <op:include href="WelcomeIP.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Settings']/*" type="template" prefix="WIP" IsInner="true" />
+              </ParameterBlock>
 
-                  <!-- Gerätetabs (nur aktivierte Kanäle) -->
-                  <op:include href="WelcomeIP.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Channel']/*" type="template" prefix="WIP" IsInner="true" />
-                </when>
-              </choose>
+              <!-- Gerätetabs (nur aktivierte Kanäle) -->
+              <op:include href="WelcomeIP.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/ParameterBlock[@Name='Channel']/*" type="template" prefix="WIP" IsInner="true" />
             </Channel>
           </Dynamic>
         </ApplicationProgram>

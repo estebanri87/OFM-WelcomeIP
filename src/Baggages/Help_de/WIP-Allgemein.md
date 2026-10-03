@@ -4,6 +4,10 @@ Bindet eine Busch-Welcome-IP-Tuerkommunikation ueber die **lokale API** des Smar
 Point an KNX an: Klingeln, Tueroeffnen, Tuerstatus und die Ausgaenge des IP-Schaltaktors.
 Video und Ton werden bewusst nicht uebertragen.
 
+Das Modul ist standardmaessig aktiv. Wird es nicht gebraucht, laesst es sich unter
+*OpenKNX -> Module* abschalten; dann blendet die ETS seine Seiten aus und die Firmware baut
+keine Verbindung auf.
+
 ## Voraussetzungen
 
 * Smart Access Point ab Version **6.36**

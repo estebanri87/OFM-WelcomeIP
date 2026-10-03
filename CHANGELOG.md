@@ -6,12 +6,17 @@
 - Kanal-Parameter **Suspendiert** (Nein/Ja) im Kanaldefinitions-Block jedes Geräts. Das Gerät
   bleibt vollständig parametriert, wird aber nicht ausgeführt — hilfreich bei der Fehlersuche.
   Suspendierte Kanäle tragen im ETS-Baum ein **⛔** vor der Beschreibung.
+- Die Objekte Verbindung, Diagnose, Klingeln (Sammel) und Sperre (alle) sind unter
+  *Allgemein → Objekte* einzeln zuschaltbar.
 
 ### Fixed
 - In der Kanalauswahl deaktivierte Geräte wurden trotzdem angelegt: `createChannel()` hat
   `Kanalaktivität` bisher nicht ausgewertet.
 
 ### Changed
+- Kein eigener Parameter „Modul aktiv“ mehr: Das Modul ist immer aktiv und wird bei Bedarf in der
+  Modulliste von OpenKNX abgeschaltet; die Firmware wertet dieses Häkchen aus. Bit 0 von Byte 0
+  bleibt frei, das Speicherlayout ändert sich nicht.
 - KO-Namen und Objektfunktionen vereinheitlicht: „Welcome [Kanal]: Eingang/Ausgang, Wert“. Kanalobjekte zeigen die
   Kanalbeschreibung im Namen.
 
