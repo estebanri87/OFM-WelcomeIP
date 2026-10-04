@@ -2,7 +2,7 @@
 
 ## 0.2.0 - 2026-09-28
 
-### Added
+### Hinzugefügt
 - Kanal-Parameter **Suspendiert** (Nein/Ja) im Kanaldefinitions-Block jedes Geräts. Das Gerät
   bleibt vollständig parametriert, wird aber nicht ausgeführt — hilfreich bei der Fehlersuche.
   Suspendierte Kanäle tragen im ETS-Baum ein **⛔** vor der Beschreibung.
@@ -13,7 +13,7 @@
 - In der Kanalauswahl deaktivierte Geräte wurden trotzdem angelegt: `createChannel()` hat
   `Kanalaktivität` bisher nicht ausgewertet.
 
-### Changed
+### Änderungen
 - Kein eigener Parameter „Modul aktiv“ mehr: Das Modul ist immer aktiv und wird bei Bedarf in der
   Modulliste von OpenKNX abgeschaltet; die Firmware wertet dieses Häkchen aus. Bit 0 von Byte 0
   bleibt frei, das Speicherlayout ändert sich nicht.
@@ -26,7 +26,7 @@ Erste Fassung. Anbindung der Busch-Welcome-IP-Türkommunikation an KNX über die
 lokale API des Smart Access Point (MQTT). Klingeln, Türöffnen, Türstatus und die
 Ausgänge des IP-Schaltaktors. Video und Ton bleiben bewusst außen vor.
 
-### Added
+### Hinzugefügt
 - **ETS-Applikation** mit den Seiten „Allgemein“ und „Kanalauswahl“ sowie 8 Gerätekanälen.
   Kanaltypen: Außenstation, IP-Schaltaktor H8304, Innenstation, generischer Datenpunkt.
 - **Kanalauswahl nach OpenKNX-Standard** (eigener Tab mit Übersichtstabelle). Deaktivierte
