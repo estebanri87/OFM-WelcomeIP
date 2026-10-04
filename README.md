@@ -1,92 +1,114 @@
 # OFM-WelcomeIP
 
-Busch-Welcome IP door entry system on the KNX bus, through the Smart Access Point's
-**local API** (MQTT). Ring, door opener, door state and the IP actuator outputs.
-Video and audio are deliberately out of scope.
+OpenKNX-Modul zur Anbindung der **Busch-Welcome-IP**-Türkommunikation an den KNX-Bus über die
+**lokale API** des Smart Access Point (MQTT). Klingeln, Türöffnen, Türstatus und die Ausgänge
+des IP-Schaltaktors. Video und Ton bleiben bewusst außen vor.
 
-Status: **skeleton**. The transport works and is testable against any MQTT broker;
-the ABB wire format and the ETS application are not finished. See *Open points*.
+> **Status: Beta.** ETS-Applikation, Kanalmodell und Transport sind fertig und gegen einen
+> beliebigen MQTT-Broker testbar. Offen ist das **ABB-Datenformat**: Topics und Nutzdaten sind
+> noch Platzhalter, siehe [Offene Punkte](#offene-punkte).
 
-## What it is for
+## Wofür
 
-| Use case | Path |
+| Anwendungsfall | Weg |
 |---|---|
-| Open the front door from a KNX push-button. The motor lock hangs on the H8304-03 potential-free output | KNX → `setDataPoint` on the IP actuator |
-| Ring signal as a group object, e.g. to trigger a chime over external logic | Outdoor station `ch0002` "Incoming call" → KNX |
+| Haustür per KNX-Taster öffnen; das Motorschloss hängt am potenzialfreien Ausgang des H8304-03 | KNX → `setDataPoint` am IP-Schaltaktor |
+| Klingelsignal als Gruppenobjekt, z.B. für einen Gong über externe Logik | Außenstation `ch0002` „Incoming call" → KNX |
 
-## Requirements
+## Voraussetzungen
 
-- Smart Access Point firmware **6.36 or later**
-- Local API enabled: *Settings → Connections & APIs → Local API & SIP configuration*
-- An API user; the Smart Access Point issues a **generic** username, not the account name
-- The device must reach the Smart Access Point on its home-network side (not the 10.x Welcome side)
-- ESP32 only. RP2040 is excluded: `MQTT::Client` keeps a static instance pointer for its
-  lwIP callbacks, so a second client would break the device's own one, and there is no TLS there.
+- Smart Access Point mit Firmware **6.36 oder neuer**
+- Lokale API eingeschaltet: *Einstellungen → Verbindungen & APIs → Local API & SIP configuration*
+- Ein API-Benutzer. Der Smart Access Point vergibt dafür einen **generischen** Benutzernamen,
+  nicht den Kontonamen.
+- Das Gerät muss den Smart Access Point auf der Heimnetz-Seite erreichen, nicht auf der
+  10.x-Welcome-Seite.
+- **ESP32.** Auf RP2040 ist das Modul nicht enthalten: `MQTT::Client` hält einen statischen
+  Instanzzeiger für seine lwIP-Callbacks, ein zweiter Client würde den geräteeigenen stören,
+  und TLS gibt es dort nicht.
 
-## Design
+## Funktionen
+
+Ein Kanal entspricht einem Gerät. Kanäle werden nach OpenKNX-Standard über die **Kanalauswahl**
+aktiviert (Typ-Variante mit „Deaktiviert"). Kanaltypen: Außenstation, IP-Schaltaktor H8304,
+Innenstation und generischer Datenpunkt.
+
+- **Türöffnen** mit wählbarem Öffnungsweg (potenzialfreier Ausgang, Türöffner-Kontakt oder
+  Lichtkanal des IP-Aktors, oder Außenstation), mit Sperrobjekt und Rückmeldung
+- **Klingelsignal** wahlweise als Impuls oder für die Dauer des Rufs, mit Sperrzeit gegen
+  Mehrfachauslösung, zusätzlich ein Sammelobjekt über alle Kanäle
+- **SmartAP-Funktionen** auf der Seite „Allgemein": Klingeln, Stummschaltung,
+  Tag/Nacht-Umschaltung, Binärein- und -ausgang, Alarm und Sabotage
+- **Experten-Parameter je Kanal** zum Überschreiben von Kanal- und Datenpunktnummer
+
+## Aufbau
 
 ```
-KNX ── WelcomeIPModule ── WelcomeIPChannel[]      channels speak WipAddress only
+KNX ── WelcomeIPModule ── WelcomeIPChannel[]      Kanäle kennen nur WipAddress
              │
-             ├─ WipMqttLink     connection, 30 s heartbeat, event queue
-             │       └─ MQTT::Module (second instance, OFM-Network)
-             └─ WipProtocol     the only place that knows the ABB format
+             ├─ WipMqttLink     Verbindung, 30-s-Heartbeat, Ereigniswarteschlange
+             │       └─ MQTT::Module (zweite Instanz, OFM-Network)
+             └─ WipProtocol     einzige Stelle, die das ABB-Format kennt
 ```
 
-**`WipProtocol` is the seam.** Topics, payload assembly and parsing live there and
-nowhere else, so confirming the format against real hardware changes one file rather
-than the whole module.
+**`WipProtocol` ist die Nahtstelle.** Topics, Aufbau und Auswertung der Nutzdaten liegen dort
+und nirgends sonst. Das Format an echter Hardware zu bestätigen ändert damit eine Datei statt
+des ganzen Moduls.
 
-**Incoming datapoints are queued, not delivered inline.** On ESP32 the MQTT client runs
-in its own FreeRTOS task, so a subscription callback does not run in the KNX loop;
-writing a group object from there would race the stack. `WipMqttLink` therefore parses
-in the callback and hands the result to `loop()` through a single-producer ring — the
-same record-and-defer rule OFM-Network's webserver follows.
+**Eingehende Datenpunkte werden eingereiht, nicht sofort zugestellt.** Auf dem ESP32 läuft der
+MQTT-Client in einer eigenen FreeRTOS-Task; ein Subscription-Callback läuft also nicht im
+KNX-Loop. Ein Gruppenobjekt von dort zu schreiben würde mit dem Stack kollidieren.
+`WipMqttLink` wertet deshalb im Callback aus und übergibt das Ergebnis über einen Ringpuffer
+an `loop()` — dieselbe Regel, der auch der Webserver von OFM-Network folgt.
 
-**Only active channels are instantiated.** `createChannel()` returns `nullptr` for a device
-that is disabled in the channel selection or set to *Suspendiert* on its channel tab, so a
-parked device costs neither RAM nor MQTT traffic while keeping its full configuration. A
-suspended channel is marked with ⛔ in the ETS tree.
+**Nur aktive Kanäle werden angelegt.** `createChannel()` liefert `nullptr` für ein Gerät, das
+in der Kanalauswahl deaktiviert oder auf seinem Kanal-Tab *suspendiert* ist. Ein geparktes
+Gerät kostet damit weder RAM noch MQTT-Verkehr, behält aber seine vollständige Konfiguration.
+Suspendierte Kanäle tragen im ETS-Baum ein ⛔.
 
-**A second MQTT client, not the device's own.** The Smart Access Point is a different
-broker with its own credentials and topic scheme, so `MQTT::Module::configure()` points
-a separate instance at it. Status publishes and the last will are off: a foreign broker
-rejects `<prefix>status` by ACL.
+**Ein zweiter MQTT-Client, nicht der geräteeigene.** Der Smart Access Point ist ein anderer
+Broker mit eigenen Zugangsdaten und eigenem Topic-Schema, deshalb richtet
+`MQTT::Module::configure()` eine getrennte Instanz darauf. Status-Veröffentlichungen und Last
+Will sind aus: ein fremder Broker lehnt `<prefix>status` per ACL ab.
 
-**The RX buffer is 64 KB.** A `getAll` response is 17–50 KB of JSON. The 1 KB default
-cannot hold it, and since the broker resends, an undersized buffer is a reconnect loop
-rather than one lost message. Parsing uses an ArduinoJson filter that keeps only serial,
-device type, channel index and output values.
+**Der Empfangspuffer ist 64 KB groß.** Eine `getAll`-Antwort umfasst 17 bis 50 KB JSON. Die
+voreingestellten 1 KB reichen nicht, und da der Broker erneut sendet, führt ein zu kleiner
+Puffer nicht zu einer verlorenen Nachricht, sondern zu einer Endlosschleife aus Neuverbindungen.
+Ausgewertet wird mit einem ArduinoJson-Filter, der nur Seriennummer, Gerätetyp, Kanalindex und
+Ausgangswerte behält.
 
-## Console
+## Konsole
 
 ```
-wip                                status, SmartAP serial, channel count
-wip connect <host> [user] [pass]   connect to the local API
-wip notls                          plain MQTT on 1883 for the next connect
-wip devices                        request the model (getAll) and list devices
-wip set <sn> <ch> <dp> <val>       write an input datapoint
-wip raw on|off                     log every received payload
+wip                                Status, SmartAP-Seriennummer, Kanalzahl
+wip devices                        Gerätemodell anfordern (getAll) und Geräte auflisten
+wip set <sn> <ch> <dp> <val>       Eingangs-Datenpunkt schreiben
+wip raw on|off                     jede empfangene Nutzlast protokollieren
 ```
 
-## Open points
+Die Verbindungsdaten kommen aus den ETS-Parametern.
 
-Marked `TODO(Stufe2)` (wire format) and `TODO(Stufe3)` (ETS) in the source.
+## Offene Punkte
 
-1. **Topics and payloads are placeholders.** The ABB page `wip_local/definition` names
-   GetAll, SetDataPoint and Notification but ships **empty code blocks**, and the
-   reference tables for DeviceTypeId/ChannelID are the only concrete data published.
-   The real strings are recovered by subscribing to `#` on the device and by reading the
-   web UI's own WebSocket traffic — the `getAll` envelope (`method`, `queryid`, `jid`,
-   `sessionjwt`) suggests the UI speaks the same JSON.
-2. **Transport unconfirmed.** Port 8883 is documented (SmartAP product manual, "Ports and
-   services"), but whether it is plain MQTT or MQTT over WebSocket is not. WebSocket would
-   need framing in `MQTT::Client`, so it is checked first.
-3. **No ETS application yet.** Channels carry the References-table defaults but read no
-   parameters; the connection is configured from the console.
-4. **Ring datapoint unverified.** The References table lists outdoor station `ch0002`
-   "Incoming call" and SmartAP `ch0001` "Doorbell ring", which makes MQTT the likely
-   source. If it turns out not to fire, the fallback is registering as a third-party SIP
-   panel on the Smart Access Point.
-5. **Trusted devices.** The H8304 releases its lock only for signed, trusted devices.
-   Whether a command through the local API counts as trusted is untested.
+Im Quelltext mit `TODO(Stufe2)` (Datenformat) und `TODO(Stufe3)` (ETS) markiert.
+
+1. **Topics und Nutzdaten sind Platzhalter.** Die ABB-Seite `wip_local/definition` nennt
+   GetAll, SetDataPoint und Notification, liefert aber **leere Codeblöcke**. Die einzigen
+   konkreten veröffentlichten Daten sind die Referenztabellen für DeviceTypeId und ChannelID.
+   Die echten Zeichenketten bekommt man, indem man am Gerät `#` abonniert und den
+   WebSocket-Verkehr der Weboberfläche mitliest — der `getAll`-Umschlag (`method`, `queryid`,
+   `jid`, `sessionjwt`) legt nahe, dass die Oberfläche dieselbe Sprache spricht.
+2. **Transport unbestätigt.** Port 8883 ist dokumentiert (SmartAP-Produkthandbuch, „Ports and
+   services"), nicht aber, ob darauf einfaches MQTT oder MQTT über WebSocket läuft. WebSocket
+   bräuchte zusätzliches Framing in `MQTT::Client` und wird deshalb zuerst geprüft.
+3. **Klingel-Datenpunkt ungeprüft.** Die Referenztabelle führt Außenstation `ch0002`
+   „Incoming call" und SmartAP `ch0001` „Doorbell ring"; MQTT ist damit die wahrscheinliche
+   Quelle. Löst das nicht aus, bleibt als Rückfallebene die Anmeldung als dritte SIP-Station
+   am Smart Access Point.
+4. **Vertrauenswürdige Geräte.** Der H8304 öffnet sein Schloss nur für signierte,
+   vertrauenswürdige Geräte. Ob ein Befehl über die lokale API als vertrauenswürdig gilt, ist
+   ungetestet.
+
+## Dokumentation
+
+- [CHANGELOG](CHANGELOG.md)
