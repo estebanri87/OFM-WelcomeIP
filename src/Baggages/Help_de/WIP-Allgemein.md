@@ -19,7 +19,15 @@ keine Verbindung auf.
 
 ## Smart Access Point
 
-Die eigenen Funktionen des Smart Access Point lassen sich zusaetzlich auf den Bus legen:
-Klingeln, Stummschaltung, Tag/Nacht-Umschaltung, Binaerein- und -ausgang sowie Alarm- und
-Sabotagemeldung. Die Seriennummer des Geraets wird automatisch aus der Geraeteliste
-uebernommen und muss nicht eingetragen werden.
+Die eigenen Funktionen des Smart Access Point lassen sich zusaetzlich auf den Bus legen.
+Jede Funktion hat einen eigenen Haken; nur angehakte Funktionen erscheinen als
+Kommunikationsobjekt:
+
+* **Klingeln** - Ruf am Smart Access Point (vorbelegt)
+* **Stummschaltung** - Schalten und Statusrueckmeldung, beide Objekte zusammen
+* **Tag/Nacht-Umschaltung**
+* **Binaereingang** und **Binaerausgang**
+* **Alarm** und **Sabotage**
+
+Die Seriennummer des Geraets wird automatisch aus der Geraeteliste uebernommen und muss
+nicht eingetragen werden.

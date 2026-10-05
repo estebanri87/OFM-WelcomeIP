@@ -140,7 +140,26 @@
                 <Memory CodeSegment="%MID%" Offset="132" BitOffset="0" />
                 <Parameter Id="%AID%_UP-%TT%00009" Name="WIPReconnect" ParameterType="%AID%_PT-WIPReconnect" Offset="0" BitOffset="0" Text="Verbindung erneut aufbauen nach" SuffixText=" s" Value="30" />
               </Union>
-              <!-- Offsets 134..143 bleiben frei (Reserve für spätere Parameter). -->
+              <!-- Welche Funktionen des Smart Access Point als Objekt erscheinen. Einzeln,
+                   weil kaum eine Anlage alle braucht; Klingeln ist vorbelegt. -->
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="134" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00014" Name="WIPUseSapDoorbell" ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="0" Text="Klingeln" Value="1" />
+                <Parameter Id="%AID%_UP-%TT%00015" Name="WIPUseSapMute" ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="1" Text="Stummschaltung" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00016" Name="WIPUseSapDayNight" ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="2" Text="Tag/Nacht-Umschaltung" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00017" Name="WIPUseSapBinIn" ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="3" Text="Binäreingang" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00018" Name="WIPUseSapBinOut" ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="4" Text="Binärausgang" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00019" Name="WIPUseSapAlarm" ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="5" Text="Alarm" Value="0" />
+                <Parameter Id="%AID%_UP-%TT%00020" Name="WIPUseSapTamper" ParameterType="%AID%_PT-CheckBox" Offset="0" BitOffset="6" Text="Sabotage" Value="0" />
+              </Union>
+              <!-- Offsets 135..142 frei für spätere Parameter. Der Platzhalter im letzten
+                   Byte macht die Reserve echt: der Producer berechnet die Blockgröße aus dem
+                   höchsten belegten Offset, ein Kommentar allein reserviert nichts. Ohne ihn
+                   verschiebt jeder neue Parameter die Module dahinter (Muster aus OGM-Common). -->
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%MID%" Offset="143" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%TT%00099" Name="WIPReserve" ParameterType="%AID%_PT-WIPIndex" Offset="0" BitOffset="0" Text="" Value="0" />
+              </Union>
             </Parameters>
 
             <ParameterRefs>
@@ -156,6 +175,13 @@
               <ParameterRef Id="%AID%_UP-%TT%00011_R-%TT%0001101" RefId="%AID%_UP-%TT%00011" />
               <ParameterRef Id="%AID%_UP-%TT%00012_R-%TT%0001201" RefId="%AID%_UP-%TT%00012" />
               <ParameterRef Id="%AID%_UP-%TT%00013_R-%TT%0001301" RefId="%AID%_UP-%TT%00013" />
+              <ParameterRef Id="%AID%_UP-%TT%00014_R-%TT%0001401" RefId="%AID%_UP-%TT%00014" />
+              <ParameterRef Id="%AID%_UP-%TT%00015_R-%TT%0001501" RefId="%AID%_UP-%TT%00015" />
+              <ParameterRef Id="%AID%_UP-%TT%00016_R-%TT%0001601" RefId="%AID%_UP-%TT%00016" />
+              <ParameterRef Id="%AID%_UP-%TT%00017_R-%TT%0001701" RefId="%AID%_UP-%TT%00017" />
+              <ParameterRef Id="%AID%_UP-%TT%00018_R-%TT%0001801" RefId="%AID%_UP-%TT%00018" />
+              <ParameterRef Id="%AID%_UP-%TT%00019_R-%TT%0001901" RefId="%AID%_UP-%TT%00019" />
+              <ParameterRef Id="%AID%_UP-%TT%00020_R-%TT%0002001" RefId="%AID%_UP-%TT%00020" />
             </ParameterRefs>
 
             <ComObjectTable>
@@ -239,14 +265,50 @@
                 <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00003_R-%TT%0000301" HelpContext="WIP-Allgemein" />
                 <choose ParamRefId="%AID%_UP-%TT%00003_R-%TT%0000301">
                   <when test="=1">
-                    <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
-                    <ComObjectRefRef RefId="%AID%_O-%TT%00005_R-%TT%0000501" />
-                    <ComObjectRefRef RefId="%AID%_O-%TT%00006_R-%TT%0000601" />
-                    <ComObjectRefRef RefId="%AID%_O-%TT%00007_R-%TT%0000701" />
-                    <ComObjectRefRef RefId="%AID%_O-%TT%00008_R-%TT%0000801" />
-                    <ComObjectRefRef RefId="%AID%_O-%TT%00009_R-%TT%0000901" />
-                    <ComObjectRefRef RefId="%AID%_O-%TT%00010_R-%TT%0001001" />
-                    <ComObjectRefRef RefId="%AID%_O-%TT%00011_R-%TT%0001101" />
+                    <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%00014_R-%TT%0001401" HelpContext="WIP-Allgemein" />
+                    <choose ParamRefId="%AID%_UP-%TT%00014_R-%TT%0001401">
+                      <when test="=1">
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%00015_R-%TT%0001501" HelpContext="WIP-Allgemein" />
+                    <choose ParamRefId="%AID%_UP-%TT%00015_R-%TT%0001501">
+                      <when test="=1">
+                        <!-- Schalten und Status gehören zusammen -->
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00005_R-%TT%0000501" />
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00006_R-%TT%0000601" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%00016_R-%TT%0001601" HelpContext="WIP-Allgemein" />
+                    <choose ParamRefId="%AID%_UP-%TT%00016_R-%TT%0001601">
+                      <when test="=1">
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00007_R-%TT%0000701" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%00017_R-%TT%0001701" HelpContext="WIP-Allgemein" />
+                    <choose ParamRefId="%AID%_UP-%TT%00017_R-%TT%0001701">
+                      <when test="=1">
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00008_R-%TT%0000801" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%00018_R-%TT%0001801" HelpContext="WIP-Allgemein" />
+                    <choose ParamRefId="%AID%_UP-%TT%00018_R-%TT%0001801">
+                      <when test="=1">
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00009_R-%TT%0000901" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%00019_R-%TT%0001901" HelpContext="WIP-Allgemein" />
+                    <choose ParamRefId="%AID%_UP-%TT%00019_R-%TT%0001901">
+                      <when test="=1">
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00010_R-%TT%0001001" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%00020_R-%TT%0002001" HelpContext="WIP-Allgemein" />
+                    <choose ParamRefId="%AID%_UP-%TT%00020_R-%TT%0002001">
+                      <when test="=1">
+                        <ComObjectRefRef RefId="%AID%_O-%TT%00011_R-%TT%0001101" />
+                      </when>
+                    </choose>
                   </when>
                 </choose>
               </ParameterBlock>

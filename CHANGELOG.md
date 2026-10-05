@@ -8,6 +8,15 @@
   Suspendierte Kanäle tragen im ETS-Baum ein **⛔** vor der Beschreibung.
 - Die Objekte Verbindung, Diagnose, Klingeln (Sammel) und Sperre (alle) sind unter
   *Allgemein → Objekte* einzeln zuschaltbar.
+- Die Funktionen des Smart Access Point sind ebenfalls einzeln zuschaltbar (Klingeln,
+  Stummschaltung, Tag/Nacht, Binärein-/-ausgang, Alarm, Sabotage) statt nur gemeinsam
+  über einen Schalter. Vorbelegt ist nur Klingeln.
+- Echte Parameter-Reserve: Der modulweite Parameterblock ist jetzt fest 144 Byte groß
+  (Platzhalter im letzten Byte, Muster aus OGM-Common). Die bisher nur per Kommentar
+  „freigehaltenen“ Bytes waren keine Reserve, der Producer packt dicht. Künftige globale
+  Parameter verschieben die nachfolgenden Module damit nicht mehr.
+  **Der Block wächst dadurch einmalig; die Applikation in der ETS aktualisieren und das
+  Gerät neu programmieren.**
 
 ### Fixed
 - In der Kanalauswahl deaktivierte Geräte wurden trotzdem angelegt: `createChannel()` hat
